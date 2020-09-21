@@ -12,26 +12,29 @@ export const firestore = firebase.firestore();
 
 //Utility function to call on onclick event 
 const GoogleProvider = new firebase.auth.GoogleAuthProvider();
-GoogleProvider.setCustomParameters({ prompt: 'select_account'})
+GoogleProvider.setCustomParameters({ prompt: 'select_account' })
 export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider);
 
 export const handleUserProfile = async (userAuth, additionalData) => {
-    if (!userAuth) return; 
-const { uid } = userAuth;
-//Return reference document 
+    if (!userAuth) return;
+    const { uid } = userAuth;
+
+    //Return reference document 
     const userRef = firestore.doc(`users/${uid}`);
     const snapshot = await userRef.get();
-//Does the user already exist
+
+    //Does the user already exist
     if (!snapshot.exists) {
-const { displayName, email } = userAuth;
-const timestamp = new Date();
+        const { displayName, email } = userAuth;
+        const timestamp = new Date();
+
         try {
-await userRef.set({
-displayName,
-email, 
-createdDate: timestamp, 
-...additionalData
-});
+            await userRef.set({
+                displayName,
+                email,
+                createdDate: timestamp,
+                ...additionalData
+            });
         } catch (err) {
             //console.log(err);
         }
