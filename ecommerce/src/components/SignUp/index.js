@@ -5,6 +5,7 @@ import { auth, handleUserProfile } from './../../firebase/utils';
 
 import FormInput from './../Forms/FormInput';
 import Button from './../Forms/Button';
+import AuthWrapper from './../AuthWrapper';
 
 const initialState = {
     displayName: '',
@@ -64,11 +65,12 @@ class SignUp extends Component {
         //destructuring state and where I am giving the value of state in this case empty string
         const { displayName, email, password, confirmPassword, errors } = this.state;
 
+        const configAuthWrapper = {
+            headline: 'Create an Account '
+        }
         return (
-            <div className="signup">
-                <div className="wrap">
-                    <h2>Signup</h2>
-
+           <AuthWrapper {...configAuthWrapper}>
+                    <div className="formWrap">
                     {errors.length > 0 && (
                         <ul>
                             {errors.map((err, index) => {
@@ -80,7 +82,6 @@ class SignUp extends Component {
                             })}
                         </ul>
                     )}
-                    <div className="formWrap">
                         <form onSubmit={this.handleFormSubmit}>
                             <FormInput
                                 type="text"
@@ -115,12 +116,11 @@ class SignUp extends Component {
                             />
 
                             <Button type="submit">
-                                Sign Up
+                                Get Started
                         </Button>
                         </form>
                     </div>
-                </div>
-            </div>
+                    </AuthWrapper>
         );
     }
 }
